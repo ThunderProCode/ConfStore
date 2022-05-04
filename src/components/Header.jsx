@@ -1,12 +1,27 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { Link } from 'react-router-dom';
 import '../styles/components/Header.css';
+import AppContext from '../Context/AppContext';
+import { AiOutlineShoppingCart } from 'react-icons/ai';
 
 const Header = () => {
+
+    const { state: { cart } } = useContext(AppContext);
+
     return (
         <div className="Header">
-            <h1 className='Header-title'>Conf Merch</h1>
+            <h1 className='Header-title'>
+                <Link to="/" >Conf Merch</Link>
+            </h1>
             <div className="Header-checkout">
-                Checkout
+                <Link to="/checkout" >
+                    <AiOutlineShoppingCart/>
+                </Link>
+                {
+                    cart.length > 0 && 
+                    <div className="Header-alert">{cart.length}
+                    </div> 
+                }
             </div>
         </div>
     );
