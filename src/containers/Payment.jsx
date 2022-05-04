@@ -2,15 +2,17 @@ import React, { useContext } from 'react';
 import { PaypalButton } from 'react-paypal-button';
 import AppContext from '../Context/AppContext';
 import { handleSumTotal } from '../utils';
+import { useNavigate } from 'react-router-dom';
 
 import '../styles/components/Payment.css';
 
 const Payment = () => {
     const { state:{cart, buyer} , addNewOrder } = useContext(AppContext);
-
+    const navigate = useNavigate();
+    const clientIdPaypal = String(process.env.CLIENT_ID_PP);
 
     const paypalOptions = {
-        clientId : 'access_token$sandbox$s8r9hftd2q5dwzsk$24e5a9750742d65e3fa90921360b9eff',
+        clientId : clientIdPaypal,
         intent: 'capture',
         currency: 'USD',
     }
@@ -29,6 +31,7 @@ const Payment = () => {
                 payment: data
             }
             addNewOrder(newOrder);
+            navigate('/checkout/success');
         }
     }
 
