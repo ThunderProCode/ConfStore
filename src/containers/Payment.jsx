@@ -1,18 +1,19 @@
 import React, { useContext } from 'react';
-import { PaypalButton } from 'react-paypal-button';
 import AppContext from '../Context/AppContext';
 import { handleSumTotal } from '../utils';
 import { useNavigate } from 'react-router-dom';
+import config from '../../config/index';
+import { PayPalButton } from 'react-paypal-button-v2';
 
 import '../styles/components/Payment.css';
 
 const Payment = () => {
-    const { state:{cart, buyer} , addNewOrder } = useContext(AppContext);
+    const { state } = useContext(AppContext);
+    const { cart, buyer } = state;
     const navigate = useNavigate();
-    const clientIdPaypal = String(process.env.CLIENT_ID_PP);
 
     const paypalOptions = {
-        clientId : clientIdPaypal,
+        clientId : config.clientIdPaypal,
         intent: 'capture',
         currency: 'USD',
     }
@@ -42,9 +43,9 @@ const Payment = () => {
 
                 {
                     cart.map( (item) => (
-                        <div className="Payment-item" key={item.tile} >
+                        <div className="Payment-item" key={item.title} >
                             <div className="Payment-element">
-                                <h4>{item.tile}</h4>
+                                <h4>{item.title}</h4>
                                 <span>
                                     $
                                     {' '}
@@ -55,8 +56,8 @@ const Payment = () => {
                     ))
                 }
 
-                <button className="Payment-button">
-                    <PaypalButton 
+                <div className="Payment-button">
+                    <PayPalButton 
                         paypalOptions={paypalOptions}
                         buttonStyles={buttonStyles}
                         amount={handleSumTotal(cart)}
@@ -65,7 +66,7 @@ const Payment = () => {
                         onPaymentError={ error  => console.log(error) }
                         onPaymentCancel={ data => console.log(data) }
                     />
-                </button>
+                </div>
             </div>
             <div/>
         </div>
